@@ -18,7 +18,7 @@ class Pokemon(models.Model):
         verbose_name='Предыдущая эволюция',
         blank=True,
         null=True,
-        related_name='previous_evolutions',
+        related_name='next_evolutions',
     )
 
     def __str__(self):
