@@ -3,15 +3,14 @@ from django.db import models  # noqa F401
 
 class Pokemon(models.Model):
     title_ru = models.CharField('Русское название', max_length=200)
-    title_en = models.CharField('Английское название', max_length=200)
-    title_jp = models.CharField('Японское название', max_length=200)
+    title_en = models.CharField('Английское название', max_length=200, blank=True)
+    title_jp = models.CharField('Японское название', max_length=200, blank=True)
     image = models.ImageField(
         'Картинка',
-        null=True,
         blank=True,
         default='../media/no_image.jpg'
     )
-    text = models.TextField('Описание покемона', null=True, blank=True)
+    text = models.TextField('Описание покемона', blank=True)
     previous_evolution = models.ForeignKey(
         'self',
         on_delete=models.SET_NULL,
@@ -31,8 +30,8 @@ class PokemonEntity(models.Model):
     pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
     appeared_at = models.DateTimeField('Время появления')
     disappeared_at = models.DateTimeField('Время исчезновения')
-    level = models.IntegerField('Уровень')
-    health = models.IntegerField('Здоровье')
-    attack = models.IntegerField('Атака')
-    defence = models.IntegerField('Защита')
-    stamina = models.IntegerField('Выносливость')
+    level = models.IntegerField('Уровень', blank=True, null=True)
+    health = models.IntegerField('Здоровье', blank=True, null=True)
+    attack = models.IntegerField('Атака', blank=True, null=True)
+    defence = models.IntegerField('Защита', blank=True, null=True)
+    stamina = models.IntegerField('Выносливость', blank=True, null=True)
