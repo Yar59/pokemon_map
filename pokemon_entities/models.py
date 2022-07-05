@@ -31,6 +31,7 @@ class PokemonEntity(models.Model):
         Pokemon,
         on_delete=models.CASCADE,
         related_name='pokemon_entities',
+        verbose_name='Покемон',
     )
     appeared_at = models.DateTimeField('Время появления')
     disappeared_at = models.DateTimeField('Время исчезновения')
@@ -39,3 +40,6 @@ class PokemonEntity(models.Model):
     attack = models.IntegerField('Атака', blank=True, null=True)
     defence = models.IntegerField('Защита', blank=True, null=True)
     stamina = models.IntegerField('Выносливость', blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.title_ru}'
