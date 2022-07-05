@@ -49,14 +49,11 @@ def show_all_pokemons(request):
     pokemons_for_page = Pokemon.objects.all()
     pokemons_on_page = []
     for pokemon in pokemons_for_page:
-        try:
-            image_url = request.build_absolute_uri(pokemon.image.url)
-        except ValueError:
-            image = None
+        image_url = request.build_absolute_uri(pokemon.image.url)
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
             'img_url': image_url,
-            'title_ru': pokemon.title,
+            'title_ru': pokemon.title_ru,
         })
 
     return render(request, 'mainpage.html', context={
@@ -86,7 +83,17 @@ def show_pokemon(request, pokemon_id):
                 pokemon_entity.longitude,
                 image_url
             )
+    if pokemon.next_evolutions.count():
+        next_evolution = pokemon.next_evolutions.all()[0]
+    else:
+        next_evolution = None
 
-    return render(request, 'pokemon.html', context={
-        'map': folium_map._repr_html_(), 'pokemon': pokemon
-    })
+    return render(
+        request,
+        'pokemon.html',
+        context={
+            'map': folium_map._repr_html_(),
+            'pokemon': pokemon,
+            'next_evolution': next_evolution,
+        }
+    )
