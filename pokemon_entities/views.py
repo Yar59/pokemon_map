@@ -56,21 +56,17 @@ def show_all_pokemons(request):
 def show_pokemon(request, pokemon_id):
     pokemon = get_object_or_404(Pokemon, id=pokemon_id)
 
-    pokemon_entities = pokemon.entities.all()
-
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
+    time_now = timezone.now()
+    pokemon_entities = PokemonEntity.objects.filter(appeared_at__lte=time_now, disappeared_at__gt=time_now)
     for pokemon_entity in pokemon_entities:
-        appeared_at = timezone.localtime(pokemon_entity.appeared_at)
-        disappeared_at = timezone.localtime(pokemon_entity.disappeared_at)
-        time_now = timezone.now()
-        if appeared_at < time_now < disappeared_at:
-            image_url = request.build_absolute_uri(pokemon_entity.pokemon.image.url)
-            add_pokemon(
-                folium_map,
-                pokemon_entity.latitude,
-                pokemon_entity.longitude,
-                image_url
-            )
+        image_url = request.build_absolute_uri(pokemon_entity.pokemon.image.url)
+        add_pokemon(
+            folium_map,
+            pokemon_entity.latitude,
+            pokemon_entity.longitude,
+            image_url
+        )
     if pokemon.next_evolutions.count():
         next_evolution = pokemon.next_evolutions.all()[0]
     else:
