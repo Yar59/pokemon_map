@@ -67,8 +67,9 @@ def show_pokemon(request, pokemon_id):
             pokemon_entity.longitude,
             image_url
         )
-    if pokemon.next_evolutions.count():
-        next_evolution = pokemon.next_evolutions.all()[0]
+    next_evolutions = pokemon.next_evolutions.all()
+    if next_evolutions.count():
+        next_evolution = next_evolutions[0]
     else:
         next_evolution = None
 
